@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Media Downloader</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Smart Media Downloader</span>
+      </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-label">Detected</span>
+        <span class="stat-value" id="detected-count">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Selected</span>
+        <span class="stat-value selected" id="selected-count">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Images</span>
+        <span class="stat-value" id="image-count">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Videos</span>
+        <span class="stat-value" id="video-count">0</span>
+      </div>
+    </div>
+
+    <!-- Main Controls -->
+    <div class="controls">
+      <button id="toggle-selection" class="btn btn-primary">
+        <svg class="icon icon-start" width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M15 3H21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 21H3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 3L14 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 21L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon icon-stop" width="16" height="16" viewBox="0 0 24 24" fill="none" style="display:none;">
+          <rect x="6" y="6" width="12" height="12" rx="1" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span class="btn-text">Start Selecting</span>
+      </button>
+
+      <button id="rescan" class="btn btn-secondary" title="Rescan page after navigating slides">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M23 4V10H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M1 20V14H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.51 9C4.01717 7.56678 4.87913 6.2854 6.01547 5.27542C7.1518 4.26545 8.52547 3.55976 10.0083 3.22426C11.4911 2.88875 13.0348 2.93434 14.4952 3.35677C15.9556 3.77921 17.2853 4.56471 18.36 5.64L23 10M1 14L5.64 18.36C6.71475 19.4353 8.04437 20.2208 9.50481 20.6432C10.9652 21.0657 12.5089 21.1112 13.9917 20.7757C15.4745 20.4402 16.8482 19.7346 17.9845 18.7246C19.1209 17.7146 19.9828 16.4332 20.49 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Rescan</span>
+      </button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button id="download-zip" class="btn btn-success" disabled title="Download all as ZIP (Ctrl+D)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>ZIP</span>
+      </button>
+
+      <button id="download-individual" class="btn btn-secondary" disabled title="Download individually">
+        <span>Individual</span>
+      </button>
+
+      <button id="clear-selection" class="btn btn-danger" disabled title="Clear all selections">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Clear</span>
+      </button>
+    </div>
+
+    <!-- Selected Items Preview -->
+    <div class="preview-section">
+      <div class="preview-header">
+        <span>Selected Media</span>
+        <span class="preview-count" id="preview-count">0 items</span>
+      </div>
+      <div class="preview-grid" id="preview-grid">
+        <div class="empty-state" id="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" opacity="0.3">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+            <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>No media selected</p>
+          <p class="hint">Click "Start Selecting" then click videos/images on the page</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="status-bar">
+      <span class="status-text" id="status-text">Ready</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

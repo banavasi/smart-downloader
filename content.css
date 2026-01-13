@@ -1,0 +1,130 @@
+/**
+ * Smart Media Downloader - Content Styles
+ * Visual feedback for media selection
+ */
+
+/* Selection mode indicator on body */
+body.smd-selection-mode {
+  cursor: crosshair !important;
+}
+
+/* Base highlightable state - dashed blue outline */
+.smd-highlightable {
+  outline: 2px dashed rgba(59, 130, 246, 0.7) !important;
+  outline-offset: 2px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease-out !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* Hover state - solid blue with glow */
+.smd-highlightable.smd-hover {
+  outline: 3px solid rgba(59, 130, 246, 0.9) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5) !important;
+  transform: scale(1.01) !important;
+  z-index: 9998 !important;
+}
+
+/* Selected state - green with checkmark */
+.smd-selected {
+  outline: 3px solid rgba(34, 197, 94, 0.9) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.4) !important;
+  z-index: 9999 !important;
+}
+
+/* Checkmark overlay for selected items */
+.smd-selected::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 28px !important;
+  height: 28px !important;
+  background: rgba(34, 197, 94, 0.95) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10000 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  pointer-events: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 18px 18px !important;
+}
+
+/* Selected + hover - brighter green */
+.smd-selected.smd-hover {
+  outline-color: rgba(34, 197, 94, 1) !important;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.6) !important;
+}
+
+/* Prevent text selection while in selection mode */
+body.smd-selection-mode * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Selection animation */
+@keyframes smd-select-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.smd-selected {
+  animation: smd-select-bounce 0.3s ease-out !important;
+}
+
+/* ============================================
+   PIN OVERLAY STYLES
+   ============================================ */
+
+.smd-pin {
+  position: absolute !important;
+  width: 32px !important;
+  height: 32px !important;
+  background: rgba(59, 130, 246, 0.95) !important;
+  border: 2px solid white !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 2147483647 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+  transition: all 0.15s ease !important;
+  pointer-events: auto !important;
+  color: white !important;
+}
+
+.smd-pin:hover {
+  transform: scale(1.15) !important;
+  background: rgba(37, 99, 235, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(59, 130, 246, 0.5) !important;
+}
+
+.smd-pin:active {
+  transform: scale(0.95) !important;
+}
+
+.smd-pin.smd-pin-selected {
+  background: rgba(34, 197, 94, 0.95) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(34, 197, 94, 0.3) !important;
+}
+
+.smd-pin.smd-pin-selected:hover {
+  background: rgba(22, 163, 74, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(34, 197, 94, 0.5) !important;
+}
+
+.smd-pin-icon {
+  width: 16px !important;
+  height: 16px !important;
+  color: white !important;
+  fill: white !important;
+}
