@@ -5,6 +5,7 @@ A powerful Chrome extension for intelligently detecting and batch downloading im
 ## ✨ Features
 
 - **Smart Detection**: Automatically finds large images and videos on any webpage
+- **Custom Selectors**: Configure custom DOM selectors for specific websites (e.g., carousels, galleries)
 - **Batch Download**: Download multiple files as a single ZIP or individually
 - **Slideshow Support**: Navigate through slides and accumulate selections
 - **Keyboard Shortcuts**: Use `Ctrl+D` to quickly download all selected media
@@ -12,6 +13,7 @@ A powerful Chrome extension for intelligently detecting and batch downloading im
 - **Selection Persistence**: Your selections are preserved when rescanning the page
 - **CORS Handling**: Built-in mechanisms to handle cross-origin downloads
 - **No Auto-Monitoring**: Extension only responds to explicit user actions - no performance impact
+- **Configurable Settings**: Adjust minimum image size, DOM watching, and more
 
 ## 🚀 Installation
 
@@ -46,6 +48,31 @@ Coming soon!
    - Click "ZIP" to download all selected files as a single ZIP archive
    - Or click "Individual" to download each file separately
    - Alternatively, press `Ctrl+D` to trigger ZIP download
+
+### Configuration & Custom Selectors
+
+1. **Open Settings**
+   - Click the settings icon (⚙️) in the popup header
+   - Or right-click the extension icon → "Options"
+
+2. **Add Custom Selectors**
+   - Click "Add Selector" to create a new configuration
+   - Enter a name (e.g., "OnlyFans Gallery")
+   - Add CSS selectors (e.g., `.gallery img`, `.carousel-item img`)
+   - The extension will prioritize these selectors when detecting media
+
+3. **Use Presets**
+   - Apply pre-configured selectors for popular libraries (PhotoSwipe, etc.)
+   - Presets are automatically activated when applied
+
+4. **Advanced Settings**
+   - Adjust minimum image width/height
+   - Enable/disable DOM change watching
+   - Configure auto-selection on swipe
+
+5. **Export/Import**
+   - Export your configuration to share or backup
+   - Import configurations from other users or devices
 
 ### Slideshow/Gallery Workflow
 
@@ -97,33 +124,51 @@ The extension scans the page DOM for:
 
 ## 🔧 Configuration
 
-The extension uses sensible defaults, but you can customize behavior:
+The extension includes a full-featured settings page where you can:
 
-**Minimum Media Size** (in `content.js`):
-```javascript
-MIN_WIDTH: 1000,    // Minimum width in pixels
-MIN_HEIGHT: 1000,   // Minimum height in pixels
-```
+- **Add Custom DOM Selectors**: Configure CSS selectors for specific websites
+- **Adjust Minimum Media Size**: Set minimum width/height for image detection
+- **Enable/Disable Features**: Toggle DOM watching, auto-selection, etc.
+- **Export/Import Settings**: Share configurations or backup your settings
 
-Reduce these values to detect smaller images, increase for larger content only.
+**Access Settings:**
+- Click the settings icon (⚙️) in the popup header
+- Or right-click the extension icon → "Options"
+
+**Example Custom Selectors:**
+- `.gallery-item img` - For gallery websites
+- `.carousel img` - For carousel/slideshow sites
+- `[data-media-id] img` - For sites using data attributes
 
 ## 📂 File Structure
 
 ```
 smart-downloader/
-├── manifest.json          # Extension manifest (v3)
-├── background.js          # Service worker for download management
+├── src/
+│   ├── popup/
+│   │   ├── popup.html    # Popup entry point
+│   │   ├── main.js       # Vue app initialization
+│   │   ├── App.vue       # Main Vue component (Composition API)
+│   │   ├── popup.css     # Popup styles
+│   │   └── chrome-mock.js # Chrome API mocks for dev
+│   └── options/
+│       ├── options.html  # Options page entry point
+│       ├── main.js       # Options Vue app initialization
+│       ├── App.vue       # Options page component
+│       └── options.css   # Options page styles
+├── manifest.json         # Extension manifest (v3)
+├── background.js         # Service worker for download management
 ├── content.js            # Content script for media detection
 ├── content.css           # Visual feedback styles
-├── popup.html            # Extension popup UI
-├── popup.js              # Popup logic
-├── popup.css             # Popup styles
 ├── lib/
-│   └── jszip.min.js     # ZIP creation library
-├── icons/               # Extension icons
+│   └── jszip.min.js      # ZIP creation library
+├── icons/                # Extension icons
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
+├── vite.config.js        # Vite build configuration
+├── build.js              # Post-build script to copy files
+├── package.json          # npm dependencies and scripts
 ├── README.md             # This file
 └── LICENSE               # MIT License
 ```
@@ -132,12 +177,46 @@ smart-downloader/
 
 ### Building from Source
 
-No build process required! This is a vanilla JavaScript extension.
+This extension uses Vue 3 with Composition API and Vite for building.
 
+**Prerequisites:**
+- Node.js 16+ and npm
+
+**Setup:**
 1. Clone the repository
-2. Load the extension folder in Chrome (see Installation)
-3. Make changes to source files
-4. Reload the extension in `chrome://extensions/`
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+**Development:**
+1. Build the extension:
+   ```bash
+   npm run build
+   ```
+   This will:
+   - Build the Vue 3 popup component
+   - Copy all extension files (manifest.json, background.js, content.js, etc.) to the `dist/` folder
+
+2. Load the `dist/` folder as an unpacked extension in Chrome:
+   - Go to `chrome://extensions/`
+   - Enable "Developer mode"
+   - Click "Load unpacked"
+   - Select the `dist/` folder
+
+**Watch Mode (for development):**
+```bash
+npm run dev
+```
+This will watch for changes and rebuild automatically. You'll still need to reload the extension in Chrome after changes.
+
+**Preview UI in Browser (without Chrome extension):**
+```bash
+npm run serve
+# or
+npm run preview
+```
+This starts a dev server at `http://localhost:5173` where you can preview the popup UI. Chrome Extension APIs are automatically mocked, so you can test the UI without loading it in Chrome. The preview page will be opened automatically in your browser.
 
 ### Chrome Developer Tools
 
@@ -173,6 +252,21 @@ To debug the extension:
 - Click "Rescan" after page finishes loading
 
 ## 📝 Changelog
+
+### Version 2.1.0
+
+- **Added Configuration Page** - Full-featured settings page for custom selectors
+- **Custom DOM Selectors** - Users can add CSS selectors for specific websites
+- **Preset Configurations** - Quick setup for popular libraries (PhotoSwipe, etc.)
+- **Export/Import Settings** - Share and backup configurations
+- **Advanced Settings** - Adjust minimum size, DOM watching, and more
+- **Settings Button** - Quick access to settings from popup
+
+### Version 2.0.0
+
+- **Migrated to Vue 3 Composition API** - Modern, reactive UI framework
+- Improved code organization and maintainability
+- Better developer experience with Vite build system
 
 ### Version 1.0.0
 

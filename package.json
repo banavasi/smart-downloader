@@ -1,0 +1,19 @@
+{
+  "name": "smart-media-downloader",
+  "version": "1.0.0",
+  "description": "Intelligently detect and batch download images and videos from any webpage",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && node build.js",
+    "preview": "vite",
+    "serve": "vite"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.1.6"
+  }
+}
